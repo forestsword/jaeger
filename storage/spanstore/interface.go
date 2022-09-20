@@ -21,6 +21,7 @@ import (
 	"time"
 
 	"github.com/jaegertracing/jaeger/model"
+	"go.opentelemetry.io/collector/pdata/ptrace"
 )
 
 // ErrTraceNotFound is returned by Reader's GetTrace if no data is found for given trace ID.
@@ -29,6 +30,11 @@ var ErrTraceNotFound = errors.New("trace not found")
 // Writer writes spans to storage.
 type Writer interface {
 	WriteSpan(ctx context.Context, span *model.Span) error
+}
+
+type OTLPWriter interface {
+	Writer
+	WriteOTLPSpan(ctx context.Context, td ptrace.Traces) error
 }
 
 // Reader finds and loads traces and other data from storage.

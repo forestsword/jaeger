@@ -265,7 +265,9 @@ func (cfg *namespaceConfig) initFromViper(v *viper.Viper) {
 
 // GetPrimary returns primary configuration.
 func (opt *Options) GetPrimary() *config.Configuration {
-	opt.Primary.Servers = strings.Split(opt.Primary.servers, ",")
+	if len(opt.Primary.Servers) == 0 {
+		opt.Primary.Servers = strings.Split(opt.Primary.servers, ",")
+	}
 	return &opt.Primary.Configuration
 }
 
@@ -280,7 +282,7 @@ func (opt *Options) Get(namespace string) *config.Configuration {
 		return nil
 	}
 	nsCfg.Configuration.ApplyDefaults(&opt.Primary.Configuration)
-	if nsCfg.servers == "" {
+	if nsCfg.servers == "" && len(nsCfg.Configuration.Servers) == 0 {
 		nsCfg.servers = opt.Primary.servers
 	}
 	nsCfg.Servers = strings.Split(nsCfg.servers, ",")

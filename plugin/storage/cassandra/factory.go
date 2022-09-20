@@ -124,12 +124,12 @@ func (f *Factory) CreateSpanReader() (spanstore.Reader, error) {
 }
 
 // CreateSpanWriter implements storage.Factory
-func (f *Factory) CreateSpanWriter() (spanstore.Writer, error) {
+func (f *Factory) CreateSpanWriter() (spanstore.OTLPWriter, error) {
 	options, err := writerOptions(f.Options)
 	if err != nil {
 		return nil, err
 	}
-	return cSpanStore.NewSpanWriter(f.primarySession, f.Options.SpanStoreWriteCacheTTL, f.primaryMetricsFactory, f.logger, options...), nil
+	return cSpanStore.NewOTLPSpanWriter(f.primarySession, f.Options.SpanStoreWriteCacheTTL, f.primaryMetricsFactory, f.logger, options...), nil
 }
 
 // CreateDependencyReader implements storage.Factory
